@@ -1,0 +1,80 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+import type { SbBlokData } from "@storyblok/js";
+import type {
+  Navbar,
+  NavigationItems,
+} from "../../.storyblok/types/285539525668951/storyblok-components";
+
+interface Props {
+  blok: Navbar;
+}
+
+const { blok }: Props = Astro.props;
+---
+
+<nav
+  {...storyblokEditable(blok as SbBlokData)}
+  class="flex justify-between items-center"
+>
+  <!-- Logo -->
+
+  {
+    blok.Logo && (
+      <div class="navbar__logo">
+        <a href="/">
+          <img
+            src={blok.Logo.filename}
+            alt={blok.Logo.alt || "Site logo"}
+            width="120"
+            height="auto"
+          />
+        </a>
+      </div>
+    )
+  }
+  <div class="flex gap-4 justify-between">
+    <!-- Navigation principale -->
+    <ul class="flex gap-4">
+      {
+        blok.navigation_items?.map((item) => {
+          if (item.component === "navigation_items") {
+            const navItem = item as NavigationItems;
+            return (
+              <li
+                {...storyblokEditable(navItem as SbBlokData)}
+                class="navbar__item"
+              >
+                <a href={navItem.url}>{navItem.label}</a>
+              </li>
+            );
+          }
+          return null;
+        })
+      }
+    </ul>
+
+    <!-- Submenu itmes -->
+    <select class="navbar__submenu">
+      {
+        blok.submenu_items?.map((item) => {
+          return <option>{item}</option>;
+        })
+      }
+    </select>
+  </div>
+  <!-- Avatar profil -->
+  {
+    blok.profile_avatar && (
+      <div {...storyblokEditable(blok as SbBlokData)} class="navbar__profile">
+        <img
+          src={blok.profile_avatar.filename}
+          alt={blok.profile_avatar.alt || "Profil utilisateur"}
+          width="40"
+          height="40"
+          class="avatar"
+        />
+      </div>
+    )
+  }
+</nav>

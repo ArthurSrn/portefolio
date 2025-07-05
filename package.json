@@ -7,14 +7,15 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "storyblok:pull": "storyblok components pull --space YOUR_SPACE_ID",
-    "storyblok:generate": "storyblok types generate --space YOUR_SPACE_ID"
+    "storyblok:pull": "storyblok components pull --space 285539525668951",
+    "storyblok:generate": "storyblok types generate --space 285539525668951"
   },
   "dependencies": {
     "@storyblok/astro": "^7.1.1",
     "@storyblok/js": "^4.1.1",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.11.0",
+    "gsap": "^3.13.0",
     "tailwindcss": "^4.1.11",
     "vite": "^7.0.1"
   },

@@ -14,3 +14,14 @@ const { story } = data;
 <Layout>
   <StoryblokComponent blok={story.content} />
 </Layout>
+
+<script>
+  import gsap from "gsap";
+  console.log("gsap version", gsap.version);
+
+  gsap.to(".box", {
+    duration: 1,
+    x: 300,
+    rotation: 27,
+  });
+</script>

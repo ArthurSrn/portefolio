@@ -20,43 +20,80 @@ const { blok }: Props = Astro.props;
   }
 </style> -->
 
+<style>
+/* caché au chargement - ne prend pas d'espace */
+.hidden-element{
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  white-space: nowrap; /* empêche le contenu de se casser */
+}
+</style>
+
 <script>
-  console.log("gsap version", window.gsap.version);
+  // @ts-nocheck
   
-  // Sélectionner TOUS les éléments avec la classe "test"
-  const testElements = document.querySelectorAll(".test");
+
+  import gsap from 'gsap';
+  import { GSDevTools } from "gsap/GSDevTools";
+  GSDevTools.create();
+
+
+  const navbar = document.querySelector('nav');
+  const navContainer = navbar?.getElementsByClassName('contain');
+
+  const tl = gsap.timeline();
+
+  tl.from(navbar, {
+    y: -200,
+    opacity: 0,
+    delay: 0.5,
+    ease: "power2.out"
+  })
+
+  // Animation d'étirement - l'élément grandit de 0 à sa taille naturelle
+  tl.to(".container-element", {
   
-  // Appliquer les event listeners à chaque élément
-  testElements.forEach((element) => {
-    element.addEventListener("mouseenter", () => 
-      gsap.to(element, { color: "#007BFF", duration: 0.3 })
-    );
-    element.addEventListener("mouseleave", () => 
-      gsap.to(element, { color: "#000", duration: 0.3 })
-    );
+    padding: "0.5rem",
+    duration: 0.2,
+    ease: "",
+  
   });
+  
+  tl.to(".hidden-element", {
+    display: "flex",
+    width: "auto", /* largeur automatique basée sur le contenu */
+    opacity: 1,
+    duration: 0.3,
+    ease: "",
+    stagger: 0.1 /* si plusieurs éléments */
+  });
+
 </script>
 
 <nav {...storyblokEditable(blok as SbBlokData)} class="flex justify-center gap-4 sticky">
-  <div class="flex items-center gap-6 p-2 bg-emerald-500 rounded-full mt-2">
-    <a href="/">
+  <div class="container-element flex items-center bg-emerald-500 rounded-full mt-2 contain">
+    <a href="/"> 
       <Image
         src={blok.Logo?.filename || ""}
         alt={blok.Logo?.alt || "Site logo"}
         width={50}
         height={50}
-        class="border-2 border-red-500 rounded-full"
+        id="logo"
+        class=" border-2 border-red-500 rounded-full"
         loading="lazy"
       />
     </a>
-
-    <ul class="flex gap-6">
+    <div class="hidden-element flex gap-6 items-center">
+    <ul id="menu" class="flex gap-6 ml-2">
       {
         blok.navigation_items?.map((item) => {
           const navItem = item as NavigationItems;
-          return <li class="test" {...storyblokEditable(navItem as SbBlokData)}><a href={navItem.url}>{navItem.label}</a></li>
+          return <li class="test" {...storyblokEditable(navItem as SbBlokData)}><a  class="nav-link" href={navItem.url}>{navItem.label}</a></li>
         })
       }
+    <div class="indicator"></div>
     </ul>
 
     {/* Submenu - Afficher seulement si il y a des items */}
@@ -78,4 +115,5 @@ const { blok }: Props = Astro.props;
       loading="lazy"
     />
   </div>
+</div>
 </nav>

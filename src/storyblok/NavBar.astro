@@ -6,6 +6,7 @@ import type {
   NavigationItems,
 } from "../../.storyblok/types/285539525668951/storyblok-components";
 import { Image } from "astro:assets";
+import { Sun } from "lucide-react";
 
 interface Props {
   blok: Navbar;
@@ -26,19 +27,15 @@ const { blok }: Props = Astro.props;
   width: 0;
   opacity: 0;
   overflow: hidden;
-
   white-space: nowrap; /* empêche le contenu de se casser */
 }
 </style>
 
 <script>
   // @ts-nocheck
-  
-
   import gsap from 'gsap';
   import { GSDevTools } from "gsap/GSDevTools";
   GSDevTools.create();
-
 
   const navbar = document.querySelector('nav');
   const navContainer = navbar?.getElementsByClassName('contain');
@@ -55,10 +52,9 @@ const { blok }: Props = Astro.props;
   // Animation d'étirement - l'élément grandit de 0 à sa taille naturelle
   tl.to(".container-element", {
   
-    padding: "0.5rem",
+    padding: "0.3rem",
     duration: 0.2,
     ease: "",
-  
   });
   
   tl.to(".hidden-element", {
@@ -73,7 +69,8 @@ const { blok }: Props = Astro.props;
 </script>
 
 <nav {...storyblokEditable(blok as SbBlokData)} class="flex justify-center gap-4 sticky">
-  <div class="container-element flex items-center bg-emerald-500 rounded-full mt-2 contain">
+  <div class="container-element flex items-center backdrop-blur-md bg-white/10 border border-white/30 rounded-full mt-2 shadow-lg">
+   
     <a href="/"> 
       <Image
         src={blok.Logo?.filename || ""}
@@ -81,12 +78,12 @@ const { blok }: Props = Astro.props;
         width={50}
         height={50}
         id="logo"
-        class=" border-2 border-red-500 rounded-full"
+        class=" border-2 border-b-gray-300-500 rounded-full"
         loading="lazy"
       />
     </a>
-    <div class="hidden-element flex gap-6 items-center">
-    <ul id="menu" class="flex gap-6 ml-2">
+    <div class="hidden-element flex items-center">
+    <ul id="menu" class="flex gap-6 ml-4">
       {
         blok.navigation_items?.map((item) => {
           const navItem = item as NavigationItems;
@@ -107,13 +104,7 @@ const { blok }: Props = Astro.props;
       </select>
     )}
 
-    <Image {...storyblokEditable(blok as SbBlokData)}
-      src={blok.profile_avatar?.filename || ""}
-      alt={blok.profile_avatar?.alt || "Profil utilisateur"}
-      width={40}
-      height={40}
-      loading="lazy"
-    />
+   <Sun size={34} strokeWidth={0.75} className="pr-2" />
   </div>
 </div>
 </nav>
